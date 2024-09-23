@@ -2,9 +2,11 @@ package dev.frozenmilk.dairy.pasteurized
 
 import dev.frozenmilk.dairy.core.util.supplier.logical.IEnhancedBooleanSupplier
 import dev.frozenmilk.dairy.core.util.supplier.numeric.IEnhancedNumericSupplier
+import dev.frozenmilk.util.modifier.Modifier
 
 @Suppress("INAPPLICABLE_JVM_NAME")
-interface PasteurizedGamepad<N: IEnhancedNumericSupplier<Double>, B: IEnhancedBooleanSupplier> {
+interface PasteurizedGamepad<N: IEnhancedNumericSupplier<Double>, B: IEnhancedBooleanSupplier<B>> {
+	fun convert(n: N, modifier: Modifier<Double>): N
 	/**
 	 * left analog stick horizontal axis
 	 */

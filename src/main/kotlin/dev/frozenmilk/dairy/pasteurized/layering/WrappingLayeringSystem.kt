@@ -1,7 +1,7 @@
 package dev.frozenmilk.dairy.pasteurized.layering
 
-import dev.frozenmilk.dairy.core.util.supplier.logical.EnhancedBooleanSupplier
-import dev.frozenmilk.dairy.core.util.supplier.numeric.EnhancedDoubleSupplier
+import dev.frozenmilk.dairy.core.util.supplier.logical.IEnhancedBooleanSupplier
+import dev.frozenmilk.dairy.core.util.supplier.numeric.IEnhancedNumericSupplier
 import dev.frozenmilk.dairy.pasteurized.PasteurizedGamepad
 
 /**
@@ -9,7 +9,9 @@ import dev.frozenmilk.dairy.pasteurized.PasteurizedGamepad
  *
  * @see ListLayeringSystem
  */
-class WrappingLayeringSystem (private val list: MutableList<PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier>>) : IncrementingLayeringSystem<Int> {
+class WrappingLayeringSystem<N : IEnhancedNumericSupplier<Double>, B : IEnhancedBooleanSupplier<B>, GAMEPAD: PasteurizedGamepad<N, B>> (private val list: List<GAMEPAD>) : IncrementingLayeringSystem<Int, N, B, GAMEPAD> {
+	@SafeVarargs
+	constructor(vararg gamepads: GAMEPAD) : this(gamepads.toList())
 	init {
 		list.forEach {
 			attachGamepad(it)
@@ -22,7 +24,7 @@ class WrappingLayeringSystem (private val list: MutableList<PasteurizedGamepad<E
 	override fun next() {
 		layer++
 		layer %= list.size
-		layer = layer.coerceIn(0 until list.size)
+		layer = layer.coerceIn(list.indices)
 	}
 
 	/**
@@ -32,17 +34,11 @@ class WrappingLayeringSystem (private val list: MutableList<PasteurizedGamepad<E
 		layer--
 		layer %= list.size
 		if (layer < 0) layer += list.size
-		layer = layer.coerceIn(0 until list.size)
+		layer = layer.coerceIn(list.indices)
 	}
 
-	override var gamepad: PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier>?
+	override val gamepad: GAMEPAD?
 		get() { return list.getOrNull(layer) }
-		set(value) {
-			if (layer in 0 until list.size && value != null) {
-				attachGamepad(value)
-				list[layer] = value
-			}
-		}
 
 	override var layer: Int = 0
 }

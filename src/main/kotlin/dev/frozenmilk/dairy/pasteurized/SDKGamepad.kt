@@ -3,21 +3,26 @@ package dev.frozenmilk.dairy.pasteurized
 import com.qualcomm.robotcore.hardware.Gamepad
 import dev.frozenmilk.dairy.core.util.supplier.logical.EnhancedBooleanSupplier
 import dev.frozenmilk.dairy.core.util.supplier.numeric.EnhancedDoubleSupplier
+import dev.frozenmilk.util.modifier.Modifier
 
 @Suppress("INAPPLICABLE_JVM_NAME")
 class SDKGamepad(gamepad: Gamepad) : PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier> {
+	override fun convert(
+		n: EnhancedDoubleSupplier,
+		modifier: Modifier<Double>
+	) = EnhancedDoubleSupplier { modifier.modify(n.state) }
 	@get:JvmName("leftStickX")
 	@set:JvmName("leftStickX")
-	override var leftStickX = EnhancedDoubleSupplier({ gamepad.left_stick_x.toDouble() })
+	override var leftStickX = EnhancedDoubleSupplier { gamepad.left_stick_x.toDouble() }
 	@get:JvmName("leftStickY")
 	@set:JvmName("leftStickY")
-	override var leftStickY = EnhancedDoubleSupplier({ -gamepad.left_stick_y.toDouble() })
+	override var leftStickY = EnhancedDoubleSupplier { -gamepad.left_stick_y.toDouble() }
 	@get:JvmName("rightStickX")
 	@set:JvmName("rightStickX")
-	override var rightStickX = EnhancedDoubleSupplier({ gamepad.right_stick_x.toDouble() })
+	override var rightStickX = EnhancedDoubleSupplier { gamepad.right_stick_x.toDouble() }
 	@get:JvmName("rightStickY")
 	@set:JvmName("rightStickY")
-	override var rightStickY = EnhancedDoubleSupplier({ -gamepad.right_stick_y.toDouble() })
+	override var rightStickY = EnhancedDoubleSupplier { -gamepad.right_stick_y.toDouble() }
 	@get:JvmName("dpadUp")
 	@set:JvmName("dpadUp")
 	override var dpadUp = EnhancedBooleanSupplier { gamepad.dpad_up }
@@ -65,10 +70,10 @@ class SDKGamepad(gamepad: Gamepad) : PasteurizedGamepad<EnhancedDoubleSupplier, 
 	override var rightStickButton = EnhancedBooleanSupplier { gamepad.right_stick_button }
 	@get:JvmName("leftTrigger")
 	@set:JvmName("leftTrigger")
-	override var leftTrigger = EnhancedDoubleSupplier({ gamepad.left_trigger.toDouble() })
+	override var leftTrigger = EnhancedDoubleSupplier { gamepad.left_trigger.toDouble() }
 	@get:JvmName("rightTrigger")
 	@set:JvmName("rightTrigger")
-	override var rightTrigger = EnhancedDoubleSupplier({ gamepad.right_trigger.toDouble() })
+	override var rightTrigger = EnhancedDoubleSupplier { gamepad.right_trigger.toDouble() }
 	@get:JvmName("touchpad")
 	@set:JvmName("touchpad")
 	override var touchpad = EnhancedBooleanSupplier { gamepad.touchpad }
@@ -80,14 +85,14 @@ class SDKGamepad(gamepad: Gamepad) : PasteurizedGamepad<EnhancedDoubleSupplier, 
 	override var touchpadFinger2 = EnhancedBooleanSupplier { gamepad.touchpad_finger_2 }
 	@get:JvmName("touchpadFinger1X")
 	@set:JvmName("touchpadFinger1X")
-	override var touchpadFinger1X = EnhancedDoubleSupplier({ gamepad.touchpad_finger_1_x.toDouble() })
+	override var touchpadFinger1X = EnhancedDoubleSupplier { gamepad.touchpad_finger_1_x.toDouble() }
 	@get:JvmName("touchpadFinger1Y")
 	@set:JvmName("touchpadFinger1Y")
-	override var touchpadFinger1Y = EnhancedDoubleSupplier({ gamepad.touchpad_finger_1_y.toDouble() })
+	override var touchpadFinger1Y = EnhancedDoubleSupplier { gamepad.touchpad_finger_1_y.toDouble() }
 	@get:JvmName("touchpadFinger2X")
 	@set:JvmName("touchpadFinger2X")
-	override var touchpadFinger2X = EnhancedDoubleSupplier({ gamepad.touchpad_finger_2_x.toDouble() })
+	override var touchpadFinger2X = EnhancedDoubleSupplier { gamepad.touchpad_finger_2_x.toDouble() }
 	@get:JvmName("touchpadFinger2Y")
 	@set:JvmName("touchpadFinger2Y")
-	override var touchpadFinger2Y = EnhancedDoubleSupplier({ gamepad.touchpad_finger_2_y.toDouble() })
+	override var touchpadFinger2Y = EnhancedDoubleSupplier { gamepad.touchpad_finger_2_y.toDouble() }
 }

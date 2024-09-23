@@ -2,6 +2,7 @@ package dev.frozenmilk.dairy.pasteurized
 
 import dev.frozenmilk.dairy.core.Feature
 import dev.frozenmilk.dairy.core.FeatureRegistrar
+import dev.frozenmilk.dairy.core.dependency.Dependency
 import dev.frozenmilk.dairy.core.dependency.lazy.Yielding
 import dev.frozenmilk.dairy.core.util.supplier.logical.EnhancedBooleanSupplier
 import dev.frozenmilk.dairy.core.util.supplier.numeric.EnhancedDoubleSupplier
@@ -9,10 +10,10 @@ import dev.frozenmilk.dairy.core.wrapper.Wrapper
 import dev.frozenmilk.util.cell.LazyCell
 
 object Pasteurized : Feature {
-	override val dependency = Yielding
+	override var dependency: Dependency<*> = Yielding
 
 	private var gamepad1Cell: LazyCell<PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier>> = LazyCell {
-		if (!FeatureRegistrar.opModeActive) throw IllegalStateException("OpMode not inited, cannot yet access gamepad1")
+		if (!FeatureRegistrar.opModeRunning) throw IllegalStateException("OpMode not inited, cannot yet access gamepad1")
 		SDKGamepad (
 				FeatureRegistrar.activeOpModeWrapper.opMode.gamepad1
 		)
@@ -24,7 +25,7 @@ object Pasteurized : Feature {
 	var gamepad1: PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier> by gamepad1Cell
 
 	private var gamepad2Cell: LazyCell<PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier>> = LazyCell {
-		if (!FeatureRegistrar.opModeActive) throw IllegalStateException("OpMode not inited, cannot yet access gamepad2")
+		if (!FeatureRegistrar.opModeRunning) throw IllegalStateException("OpMode not inited, cannot yet access gamepad2")
 		SDKGamepad (
 				FeatureRegistrar.activeOpModeWrapper.opMode.gamepad2
 		)
@@ -35,7 +36,7 @@ object Pasteurized : Feature {
 	@set:JvmName("gamepad2")
 	var gamepad2: PasteurizedGamepad<EnhancedDoubleSupplier, EnhancedBooleanSupplier> by gamepad2Cell
 
-	override fun postUserStopHook(opMode: Wrapper) {
+	override fun cleanup(opMode: Wrapper) {
 		gamepad1Cell.invalidate()
 		gamepad2Cell.invalidate()
 	}
