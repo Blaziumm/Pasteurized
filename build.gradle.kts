@@ -35,7 +35,6 @@ dependencies {
 	implementation("androidx.appcompat:appcompat:1.2.0")
 
 	compileOnly(project(":Core"))
-	testImplementation(project(":Core"))
 	testImplementation(testFixtures(project(":Core")))
 
 	compileOnly("org.firstinspires.ftc:RobotCore:10.0.0")
